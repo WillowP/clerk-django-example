@@ -1,6 +1,7 @@
+from django.conf import settings
 from django.shortcuts import render
 from django.http import JsonResponse
-from jose import jwt
+from clerk_backend_api.jwks_helpers import verify_token, VerifyTokenOptions
 
 from urllib.request import urlopen
 import json
@@ -8,17 +9,8 @@ import json
 def clerk_jwt(request):
     # Strip the "Bearer " prefix from the header
     token = request.headers['Authorization'][7:]
-
-    # Update this to 'https://{clerk_frontend_api}/.well-known/jwks.json'
-    # Note: The content of this endpoint will never change, so it should
-    # be cached on the server instead of requested with each API call
-    url = 'https://clerk.clerk.dev/.well-known/jwks.json'
-    response = urlopen(url)
-    data_json = json.loads(response.read())
-
-    decoded = jwt.decode(token, data_json['keys'][0], algorithms=['RS256'])
-
-    data = {
+    decoded = verify_token(token, VerifyTokenOptions(secret_key=settings.CLERK_SECRET_KEY))
+    data =  {
         'userId': decoded['sub'],
     }
     return JsonResponse(data)

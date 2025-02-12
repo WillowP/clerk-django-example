@@ -20,7 +20,7 @@ class ClerkAuthMiddleware:
         try:
             request.verified_clerk_token = verify_token(token, VerifyTokenOptions(
                 secret_key=settings.CLERK_SECRET_KEY,
-                authorized_parties=settings.CLERK_ALLOWED_PARTIES
+                authorized_parties=settings.CLERK_AUTHORIZED_PARTIES,
             ))
 
         except TokenVerificationError:

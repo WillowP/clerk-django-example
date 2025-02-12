@@ -16,10 +16,10 @@ Start the server:
 python3 manage.py runserver
 ```
 
-Set `CLERK_ALLOWED_PARTIES` in clerkproject/settings.py:
+Set `CLERK_AUTHORIZED_PARTIES` in clerkproject/settings.py:
 ```python
 # default server location for Clerk React App
-CLERK_ALLOWED_PARTIES = ['http://localhost:5173', ]
+CLERK_AUTHORIZED_PARTIES = ['http://localhost:5173', ]
 ```
 
 From a Clerk frontend, use the `useSession` hook to retrieve the getToken() function:

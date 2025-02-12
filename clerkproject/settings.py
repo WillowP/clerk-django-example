@@ -129,4 +129,4 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CLERK_SECRET_KEY = os.getenv('CLERK_SECRET_KEY')
-CLERK_ALLOWED_PARTIES = ['http://localhost:5173', ]
+CLERK_AUTHORIZED_PARTIES = ['http://localhost:5173', ]

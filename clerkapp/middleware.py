@@ -3,11 +3,9 @@ from clerk_backend_api.jwks_helpers import verify_token, VerifyTokenOptions, Tok
 
 class ClerkAuthMiddleware:
     """
-    Middleware that adds a `clerk_user` attribute to request objects
-    before the view is called.
-
-    The `clerk_user` attribute is simply the value returned by `verify_token` if valid,
-    or `None` if the token verification fails.
+    Middleware that adds a `verified_clerk_token` attribute to request objects
+    before the view is called, which is `None` if the token verification failed,
+    or the decoded access token if it succeeded.
     """
     def __init__(self, get_response):
         self.get_response = get_response
@@ -20,13 +18,13 @@ class ClerkAuthMiddleware:
         # Strip the "Bearer " prefix from the header
         token = request.headers['Authorization'][7:]
         try:
-            request.clerk_user = verify_token(token, VerifyTokenOptions(
+            request.verified_clerk_token = verify_token(token, VerifyTokenOptions(
                 secret_key=settings.CLERK_SECRET_KEY,
                 authorized_parties=settings.CLERK_ALLOWED_PARTIES
             ))
 
         except TokenVerificationError:
-            request.clerk_user = None
+            request.verified_clerk_token = None
 
         response = self.get_response(request)
 

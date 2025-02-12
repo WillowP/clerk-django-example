@@ -66,5 +66,5 @@ class ClerkAuthenticated(BasePermission):
     """
 
     def has_permission(self, request, view):
-        return request.clerk_user is not None
+        return request.verified_clerk_token is not None
 ```

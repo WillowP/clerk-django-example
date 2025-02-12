@@ -24,19 +24,33 @@ CLERK_ALLOWED_PARTIES = ['http://localhost:5173', ]
 
 From a Clerk frontend, use the `useSession` hook to retrieve the getToken() function:
 
-```
+```js
 const session = useSession();
 const getToken = session?.session?.getToken
 ```
 
-Then, request the python server with:
+Then, request the python server:
 
-```
+```js
 if (getToken) {
-    await fetch("http://localhost:8000/clerk_jwt", {
+    // get the userId or None if the token is invalid
+    const res = await fetch("http://localhost:8000/clerk_jwt", {
         headers: {
             "Authorization": `Bearer ${await getToken()}`
         }
     })
+    console.log(await res.json()) // {userId: 'the_user_id_or_null'}
+
+    // get gated data or a 401 Unauthorized if the token is not valid
+    const res = await fetch("http://localhost:8000/gated_data", {
+        headers: {
+            "Authorization": `Bearer ${await getToken()}`
+        }
+    })
+    if (res.status === 401) {
+        // token was invalid
+    } else {
+        console.log(await res.json()) // {foo: "bar"}
+    }
 }
 ```

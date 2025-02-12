@@ -49,7 +49,8 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware'
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'clerkapp.middleware.ClerkAuthMiddleware'
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True
@@ -127,4 +128,5 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CLERK_SECRET_KEY = os.getenv("CLERK_SECRET_KEY")
+CLERK_SECRET_KEY = os.getenv('CLERK_SECRET_KEY')
+CLERK_ALLOWED_PARTIES = ['http://localhost:5173', ]

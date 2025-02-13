@@ -55,7 +55,7 @@ if (getToken) {
 }
 ```
 
-If you're using Django REST Framework, you can create a permission like:
+If you're using Django REST Framework, you can create a permission that can be used to guard data in a ViewSet.
 
 ```py
 from rest_framework.permissions import BasePermission
